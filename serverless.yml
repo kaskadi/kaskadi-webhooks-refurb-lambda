@@ -20,8 +20,10 @@ provider:
     restApiRootResourceId: !ImportValue KaskadiWebhooksRestAPIGatewayRootResourceId
 
 functions:
-  testLambda:
+  KaskadiWebhooksRefurbishmentLambda:
     handler: kaskadi-webhooks-refurb-lambda.handler
+    layers:
+      - !ImportValue KaskadiEsLayerArn
     name: ${self:service.name}
     package:
       include:
