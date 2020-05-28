@@ -18,16 +18,28 @@ provider:
     restApiId: !ImportValue KaskadiWebhooksRestAPIGatewayId
     restApiRootResourceId: !ImportValue KaskadiWebhooksRestAPIGatewayRootResourceId
 
+layers:
+  KaskadiWebhooksRefurbishmentLayer:
+    path: layer
+    name: ${self:service.name}-layer
+    description: Layer for ${self:service.name}
+    compatibleRuntimes:
+      - nodejs10.x
+      - nodejs12.x
+    licenseInfo: MIT
+    package:
+      include:
+        - '**/**'
+
 functions:
   KaskadiWebhooksRefurbishment:
     handler: kaskadi-webhooks-refurb-lambda.handler
     layers:
-      - !ImportValue KaskadiEsLayerArn
+      - { Ref: KaskadiWebhooksRefurbishmentLayerLambdaLayer }
     name: ${self:service.name}
     package:
       include:
         - 'kaskadi-webhooks-refurb-lambda.js'
-        - 'node_modules/**'
     environment:
       ES_ACCESS_ID: ${env:ES_ACCESS_ID}
       ES_ACCESS_SECRET: ${env:ES_ACCESS_SECRET}
